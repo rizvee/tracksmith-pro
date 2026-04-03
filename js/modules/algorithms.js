@@ -73,24 +73,42 @@ export const Algorithms = {
             }
         });
 
-        // 2. PIANO (MARKOV CHORDAL)
-        let currentPos = 0;
+        // 2. PIANO (MARKOV MELODIC)
+        // Improved: Root preference and melodic contour
+        let currentPos = 0; // Index in scale
         for (let i = 0; i < totalSteps; i++) {
-            const prob = 0.2 + (energy * 0.4);
+            const prob = 0.15 + (energy * 0.4);
             if (rand() < prob) {
+                // Markov: Small steps preferred, bias towards Root (0)
                 const step = rand() > 0.5 ? 1 : -1;
-                currentPos = Math.max(0, Math.min(scale.length - 1, currentPos + step));
+                const rootBias = currentPos > 0 ? -0.1 : 0.1; // Pull towards center
+                
+                if (rand() + rootBias > 0.5) {
+                    currentPos = Math.max(0, Math.min(scale.length - 1, currentPos + step));
+                } else {
+                    // Stay or micro-jump
+                    if (rand() > 0.8) currentPos = 0; 
+                }
+
                 const midiNote = root + scale[currentPos];
                 performance.piano.push({ time: i, note: Tone.Frequency(midiNote, "midi").toNote() });
             }
         }
 
-        // 3. GUITAR (AMBIENT PAD)
-        for (let i = 0; i < totalSteps; i += 16) { // Every bar
-            const prob = 0.2 + (energy * 0.5);
+        // 3. GUITAR (RHYTHMIC ARPEGGIO)
+        // Changed: From pads to rhythmic arpeggios for "movement"
+        for (let i = 0; i < totalSteps; i += 8) { // Every half bar
+            const prob = 0.3 + (energy * 0.4);
             if (rand() < prob || i === 0) {
-                const chordRoot = root - 12 + scale[Math.floor(rand() * 3)];
-                performance.guitar.push({ time: i, note: Tone.Frequency(chordRoot, "midi").toNote() });
+                // Play a small arpeggio figure
+                const chordNotes = [0, 2, 4].map(idx => root - 12 + scale[idx % scale.length]);
+                const note = chordNotes[Math.floor(rand() * chordNotes.length)];
+                performance.guitar.push({ time: i, note: Tone.Frequency(note, "midi").toNote() });
+                
+                // Add a second note for high energy
+                if (energy > 0.6 && rand() > 0.5) {
+                    performance.guitar.push({ time: i + 2, note: Tone.Frequency(chordNotes[1], "midi").toNote() });
+                }
             }
         }
 

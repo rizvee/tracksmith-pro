@@ -122,9 +122,15 @@ export class UI {
     }
 
     startVisualizer(analyser) {
+        if (!analyser) return;
+        const ctx = this.canvas.getContext("2d");
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
         const draw = () => {
+            if (!analyser) return;
             requestAnimationFrame(draw);
-            const buffer = analyser.getValue();
+            analyser.getByteTimeDomainData(dataArray);
             const w = this.canvas.width / (window.devicePixelRatio || 1);
             const h = this.canvas.height / (window.devicePixelRatio || 1);
             
