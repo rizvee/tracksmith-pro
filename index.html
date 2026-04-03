@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSmith | AI Copyright-Free Music Generator & Tabla Loops</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="TrackSmith is a professional AI-driven copyright-free music generator. Create background scores for reels, YouTube, and shorts with unique tabla loops and algorithmic rhythms.">
+    <meta name="keywords" content="copyright-free music generator, background score for reels, tabla loops, AI music, royalty free beats, percussion generator">
+    <meta name="author" content="Hasan Rizvee (rizvee.github.io)">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    
+    <!-- Styling -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "TrackSmith",
+      "url": "https://tracksmith.pro",
+      "author": {
+        "@type": "Person",
+        "name": "Hasan Rizvee",
+        "url": "https://rizvee.github.io"
+      },
+      "description": "Professional-grade copyright-free music generator specializing in background scores for social media reels and authentic tabla loops using Euclidean algorithms and Markov chains.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Euclidean Rhythm Generation",
+        "Markov Chain Composition",
+        "Authentic Tabla Loops",
+        "High-fidelity WAV Export",
+        "Real-time Visualizer"
+      ]
+    }
+    </script>
+    
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/midi-writer-js@2.1.4/browser/index.min.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <span class="logo-icon">∿</span>
+            <h1>TrackSmith<span class="pro-badge">PRO</span></h1>
+        </div>
+        <nav>
+            <button id="pwa-install" class="btn-ghost">Install App</button>
+            <button id="help-toggle" class="btn-icon">?</button>
+        </nav>
+    </header>
+
+    <main class="app-container">
+        <section class="visualizer-section">
+            <canvas id="viz-canvas"></canvas>
+            <div class="overlay-info">
+                <div id="bpm-display">120 BPM</div>
+                <div id="status-display">Ready to Create</div>
+            </div>
+        </section>
+
+        <section class="controls-section">
+            <div class="control-card glass">
+                <h3>Global Dashboard</h3>
+                <div class="control-grid glass">
+                <div class="control-item">
+                    <label for="mood-select">Mood / Scale</label>
+                    <select id="mood-select" class="mood-dropdown">
+                        <option value="pentatonic">✨ Pentatonic (Safe)</option>
+                        <option value="bhairavi">🧘 Raag Bhairavi (Meditation)</option>
+                        <option value="yaman">🌅 Raag Yaman (Early Morning)</option>
+                        <option value="dorian">🎸 Dorian (Jazzy/Funk)</option>
+                        <option value="blue">🎷 Blues Scale</option>
+                    </select>
+                </div>
+                <div class="control-item">
+                    <label for="energy-slider">Energy Density</label>
+                    <input type="range" id="energy-slider" min="0" max="1" step="0.01" value="0.5">
+                    <div class="slider-labels"><span>Striped</span><span>Orchestral</span></div>
+                </div>
+                <div class="control-item">
+                    <label for="bpm-range">Tempo (BPM): <span id="bpm-val">120</span></label>
+                    <input type="range" id="bpm-range" min="60" max="180" value="120">
+                </div>
+            </div>
+
+            <section class="timeline-section glass">
+                <div class="timeline-header">
+                    <h3>Video-Sync Timeline</h3>
+                    <button id="btn-copy-attribution" class="btn-micro">📋 Copy Attribution</button>
+                </div>
+                <div id="video-timeline" class="timeline-track">
+                    <!-- Markers injected via JS -->
+                    <div class="timeline-progress"></div>
+                </div>
+            </section>
+
+            <div class="visualizer-container glass">
+                <canvas id="viz-canvas"></canvas>
+                <div id="status-display" class="status-idle">IDLE</div>
+            </div>
+
+            <section class="snapshot-section glass">
+                <h3>Saved Snapshots</h3>
+                <div id="snapshot-gallery" class="snapshot-grid">
+                    <!-- Snapshots -->
+                </div>
+                <button id="btn-save-snapshot" class="btn-secondary">💾 Save Current Vibe</button>
+            </section>
+            </div>
+
+            <div class="tracks-container">
+                <div class="track-card glass" data-track="tabla">
+                    <div class="track-info">
+                        <span class="instrument-icon">🥁</span>
+                        <h4>Tabla Beats</h4>
+                    </div>
+                    <div class="track-controls">
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-tabla" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="mixer-group">
+                            <label>Vol</label>
+                            <input type="range" class="vol-range" id="vol-tabla" min="0" max="1" step="0.01" value="0.8">
+                        </div>
+                        <input type="range" class="complexity-range" id="tabla-complexity" min="1" max="16" value="12">
+                    </div>
+                </div>
+
+                <div class="track-card glass" data-track="piano">
+                    <div class="track-info">
+                        <span class="instrument-icon">🎹</span>
+                        <h4>Ambient Piano</h4>
+                    </div>
+                    <div class="track-controls">
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-piano" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="mixer-group">
+                            <label>Vol</label>
+                            <input type="range" class="vol-range" id="vol-piano" min="0" max="1" step="0.01" value="0.7">
+                        </div>
+                        <input type="range" class="complexity-range" id="piano-complexity" min="1" max="16" value="7">
+                    </div>
+                </div>
+
+                <div class="track-card glass" data-track="guitar">
+                    <div class="track-info">
+                        <span class="instrument-icon">🎸</span>
+                        <h4>Acoustic Guitar</h4>
+                    </div>
+                    <div class="track-controls">
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-guitar" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="mixer-group">
+                            <label>Vol</label>
+                            <input type="range" class="vol-range" id="vol-guitar" min="0" max="1" step="0.01" value="0.5">
+                        </div>
+                        <input type="range" class="complexity-range" id="guitar-complexity" min="1" max="16" value="4">
+                    </div>
+                </div>
+            </div>
+
+            <section class="performance-section glass">
+                <div class="perf-header">
+                    <h3>FX Performance Pad</h3>
+                    <p>X: Filter Cutoff | Y: Reverb Mix</p>
+                </div>
+                <div id="xy-pad" class="xy-pad-container">
+                    <div id="xy-pointer" class="xy-pointer"></div>
+                </div>
+            </section>
+
+            <div class="action-bar glass">
+                <button id="btn-master-play" class="btn-primary">
+                    <span class="icon">▶</span> START GENERATOR
+                </button>
+                <div class="export-group">
+                    <button id="btn-record" class="btn-record">
+                        <span class="record-dot"></span> RECORD
+                    </button>
+                    <button id="btn-download" class="btn-download" disabled>
+                        <span>⬇</span> SAVE WAV
+                    </button>
+                    <button id="btn-midi" class="btn-download" disabled title="Export as MIDI for DAWs">
+                        <span>🎹</span> MIDI
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer glass">
+        <p>© 2026 TrackSmith - Crafted by <a href="https://rizvee.github.io" style="color: var(--accent); text-decoration: none;">Hasan Rizvee</a></p>
+        <p>100% Royal-Free Background Score for Reels & Shorts.</p>
+    </footer>
+
+    <!-- Modal for attribution -->
+    <div id="modal-attribution" class="modal-overlay hidden">
+        <div class="modal-content glass">
+            <h3>Creative Commons Attribution</h3>
+            <p>Your score is ready for social media. Copy the snippet below to credit the engine correctly:</p>
+            <textarea id="text-attribution" readonly class="attribution-box"></textarea>
+            <div class="modal-actions">
+                <button id="btn-copy-finish" class="btn-primary">📋 Copy & Close</button>
+                <button id="btn-modal-close" class="btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Controller -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "instruments": {
+    "tabla": {
+      "baseUrl": "https://cdn.tracksmith.pro/assets/tabla/",
+      "samples": { "C3": "dha.wav", "D3": "ta.wav", "E3": "tin.wav" }
+    },
+    "guitar": {
+      "baseUrl": "https://cdn.tracksmith.pro/assets/guitar/",
+      "samples": { "A2": "strum_A.mp3", "E2": "strum_E.mp3" }
+    },
+    "piano": {
+       "baseUrl": "https://cdn.tracksmith.pro/assets/piano/",
+       "samples": { "C4": "c4.wav", "E4": "e4.wav", "G4": "g4.wav" }
+    }
+  }
+}
