@@ -52,8 +52,7 @@
     </script>
     
     <!-- Dependencies -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/midi-writer-js@2.1.4/browser/index.min.js"></script>
+    <!-- Removed Tone.js and MidiWriterJS -->
 </head>
 <body>
     <header class="app-header">
@@ -109,8 +108,16 @@
                 <div class="overlay-info">
                     <div id="bpm-display">120 BPM</div>
                     <div id="status-display" class="status-idle">IDLE</div>
+                    <div id="midi-status" class="status-idle">MIDI: DISCONNECTED</div>
                 </div>
             </div>
+
+            <section class="sequencer-section glass">
+                <h3>Step Sequencer (Manual Override)</h3>
+                <div class="sequencer-container">
+                    <canvas id="sequencer-canvas"></canvas>
+                </div>
+            </section>
 
             <section class="snapshot-section glass">
                 <h3>Saved Snapshots</h3>

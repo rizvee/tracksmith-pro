@@ -21,12 +21,29 @@ export class UI {
         this.xyPad = document.getElementById("xy-pad");
         this.xyPointer = document.getElementById("xy-pointer");
         
+        // Sequencer Elements
+        this.seqCanvas = document.getElementById("sequencer-canvas");
+        if (this.seqCanvas) {
+            this.seqCtx = this.seqCanvas.getContext("2d");
+            this.gridData = {}; // Format: { "tabla": { "step_0_note_C3": true } }
+            this.gridRows = ["C3", "D3", "E3", "F3", "G3", "A3", "B3", "C4"];
+            this.gridCols = 16;
+            this.cellWidth = 30;
+            this.cellHeight = 20;
+            this.activeInstrument = "tabla";
+            this.currentStep = 0;
+            this.manualOverrides = {};
+        }
+
         this.init();
     }
 
     init() {
         this.resize();
         window.addEventListener("resize", () => this.resize());
+        if (this.seqCanvas) {
+            this.initSequencer();
+        }
     }
 
     resize() {
@@ -35,6 +52,16 @@ export class UI {
         this.canvas.width = rect.width * dpr;
         this.canvas.height = rect.height * dpr;
         this.ctx.scale(dpr, dpr);
+
+        if (this.seqCanvas) {
+            const seqRect = this.seqCanvas.parentElement.getBoundingClientRect();
+            this.seqCanvas.width = (this.gridCols * this.cellWidth) * dpr;
+            this.seqCanvas.height = (this.gridRows.length * this.cellHeight) * dpr;
+            this.seqCanvas.style.width = `${this.gridCols * this.cellWidth}px`;
+            this.seqCanvas.style.height = `${this.gridRows.length * this.cellHeight}px`;
+            this.seqCtx.scale(dpr, dpr);
+            this.drawSequencer();
+        }
     }
 
     updateBPM(bpm) {
@@ -121,15 +148,105 @@ export class UI {
         ['mousemove', 'touchmove'].forEach(ev => this.xyPad.addEventListener(ev, (e) => isDown && handleInteraction(e)));
     }
 
+    updatePlaybackProgress(step) {
+        const percent = ((step % 256) / 256) * 100;
+        this.progBar.style.width = `${percent}%`;
+
+        // Also update sequencer visual
+        if (this.seqCanvas) {
+            this.currentStep = step % this.gridCols;
+            this.drawSequencer();
+        }
+    }
+
+    /**
+     * STEP SEQUENCER
+     */
+    initSequencer() {
+        this.drawSequencer();
+
+        this.seqCanvas.addEventListener('click', (e) => {
+            const rect = this.seqCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const col = Math.floor(x / this.cellWidth);
+            const row = Math.floor(y / this.cellHeight);
+
+            if (col >= 0 && col < this.gridCols && row >= 0 && row < this.gridRows.length) {
+                const note = this.gridRows[this.gridRows.length - 1 - row]; // bottom up
+                const key = `${col}_${note}`;
+
+                if (!this.manualOverrides[this.activeInstrument]) {
+                    this.manualOverrides[this.activeInstrument] = {};
+                }
+
+                if (this.manualOverrides[this.activeInstrument][key]) {
+                    delete this.manualOverrides[this.activeInstrument][key];
+                } else {
+                    this.manualOverrides[this.activeInstrument][key] = true;
+                }
+
+                this.drawSequencer();
+            }
+        });
+
+        // Add instrument tabs or just use "tabla" for now to demonstrate
+        // Usually you'd tie this to track selection in the UI
+        document.querySelectorAll('.track-card').forEach(card => {
+            card.addEventListener('click', () => {
+                this.activeInstrument = card.dataset.track;
+                this.drawSequencer();
+            });
+        });
+    }
+
+    drawSequencer() {
+        if (!this.seqCtx) return;
+        this.seqCtx.clearRect(0, 0, this.seqCanvas.width, this.seqCanvas.height);
+
+        const instData = this.manualOverrides[this.activeInstrument] || {};
+
+        for (let col = 0; col < this.gridCols; col++) {
+            for (let row = 0; row < this.gridRows.length; row++) {
+                const x = col * this.cellWidth;
+                const y = row * this.cellHeight;
+                const note = this.gridRows[this.gridRows.length - 1 - row];
+                const key = `${col}_${note}`;
+
+                this.seqCtx.strokeStyle = "rgba(255,255,255,0.1)";
+                this.seqCtx.strokeRect(x, y, this.cellWidth, this.cellHeight);
+
+                if (instData[key]) {
+                    this.seqCtx.fillStyle = "#3b82f6";
+                    this.seqCtx.fillRect(x + 2, y + 2, this.cellWidth - 4, this.cellHeight - 4);
+                }
+            }
+        }
+
+        // Draw playhead
+        if (this.currentStep >= 0) {
+            this.seqCtx.fillStyle = "rgba(244, 63, 94, 0.3)"; // Rose
+            this.seqCtx.fillRect(this.currentStep * this.cellWidth, 0, this.cellWidth, this.gridRows.length * this.cellHeight);
+        }
+    }
+
+    getManualOverrides() {
+        return this.manualOverrides;
+    }
+
     startVisualizer(analyser) {
         if (!analyser) return;
-        const ctx = this.canvas.getContext("2d");
+
+        // With pure Web Audio, analyser gives a Uint8Array of 0-255 values
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
 
         const draw = () => {
             if (!analyser) return;
             requestAnimationFrame(draw);
 
-            const buffer = analyser.getValue();
+            analyser.getByteTimeDomainData(dataArray);
 
             const w = this.canvas.width / (window.devicePixelRatio || 1);
             const h = this.canvas.height / (window.devicePixelRatio || 1);
@@ -143,12 +260,12 @@ export class UI {
             this.ctx.shadowBlur = 15;
             this.ctx.shadowColor = "rgba(59, 130, 246, 1)";
             
-            const sliceWidth = w / buffer.length;
+            const sliceWidth = w / bufferLength;
             let x = 0;
-            for (let i = 0; i < buffer.length; i++) {
-                // buffer[i] is between -1.0 and 1.0. We map it to y coordinates from h to 0
-                const v = (buffer[i] + 1) / 2; // Normalize to 0..1
-                const y = v * h;
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0; // 128 is center (0-255)
+                const y = v * h / 2;
+
                 if (i === 0) this.ctx.moveTo(x, y);
                 else this.ctx.lineTo(x, y);
                 x += sliceWidth;
