@@ -1,15 +1,15 @@
 {
   "instruments": {
     "tabla": {
-      "baseUrl": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@master/samples/woodblock/",
-      "samples": { "C3": "woodblock.mp3" }
+      "baseUrl": "https://tonejs.github.io/audio/salamander/",
+      "samples": { "C3": "A0.mp3" }
     },
     "guitar": {
-      "baseUrl": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@master/samples/guitar-acoustic/",
+      "baseUrl": "https://tonejs.github.io/audio/salamander/",
       "samples": { "A2": "A2.mp3", "C3": "C3.mp3", "E3": "E3.mp3" }
     },
     "piano": {
-       "baseUrl": "https://cdn.jsdelivr.net/gh/nbrosowsky/tonejs-instruments@master/samples/piano/",
+       "baseUrl": "https://tonejs.github.io/audio/salamander/",
        "samples": { "A4": "A4.mp3", "C4": "C4.mp3", "E4": "E4.mp3" }
     }
   }
