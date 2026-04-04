@@ -1,0 +1,20 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "A high-performance, browser-based, no-AI music generator designed for content creators and musicians. Generate royalty-free background scores directly in your browser using mathematical probability and seed-based determinism.",
+  "scripts": {
+    "test": "node run_tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rizvee/tracksmith-pro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/rizvee/tracksmith-pro/issues"
+  },
+  "homepage": "https://github.com/rizvee/tracksmith-pro#readme"
+}
