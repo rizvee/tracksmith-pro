@@ -33,13 +33,13 @@ export class Exporter {
     }
 
     /**
-     * Download Audio (.ogg/wav container)
+     * Download Audio (.webm/wav container)
      */
     downloadAudio() {
         if (this.chunks.length === 0) return;
-        const blob = new Blob(this.chunks, { type: 'audio/ogg' });
+        const blob = new Blob(this.chunks, { type: 'audio/webm' });
         const url = URL.createObjectURL(blob);
-        this._triggerDownload(url, `tracksmith_audio_${Date.now()}.ogg`);
+        this._triggerDownload(url, `tracksmith_audio_${Date.now()}.webm`);
     }
 
     /**

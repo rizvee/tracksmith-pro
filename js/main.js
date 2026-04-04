@@ -124,12 +124,12 @@ class App {
         document.getElementById("btn-record").addEventListener("click", (e) => {
             if (this.exporter.getIsRecording()) {
                 this.exporter.stop();
-                e.target.innerHTML = 'RECORD';
+                e.currentTarget.innerHTML = '<span class="record-dot"></span> RECORD';
                 document.getElementById("btn-download").disabled = false;
             } else {
                 if (!this.isPlaying) this.togglePlay();
                 this.exporter.start();
-                e.target.innerHTML = 'STOP RECORDING';
+                e.currentTarget.innerHTML = '<span class="record-dot"></span> STOP RECORDING';
                 this.ui.updateStatus("🔴 RECORDING...", true);
             }
         });
