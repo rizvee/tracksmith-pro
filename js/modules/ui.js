@@ -124,13 +124,13 @@ export class UI {
     startVisualizer(analyser) {
         if (!analyser) return;
         const ctx = this.canvas.getContext("2d");
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
 
         const draw = () => {
             if (!analyser) return;
             requestAnimationFrame(draw);
-            analyser.getByteTimeDomainData(dataArray);
+
+            const buffer = analyser.getValue();
+
             const w = this.canvas.width / (window.devicePixelRatio || 1);
             const h = this.canvas.height / (window.devicePixelRatio || 1);
             
@@ -146,7 +146,9 @@ export class UI {
             const sliceWidth = w / buffer.length;
             let x = 0;
             for (let i = 0; i < buffer.length; i++) {
-                const y = ((buffer[i] * 1.8) + 1) * (h / 2);
+                // buffer[i] is between -1.0 and 1.0. We map it to y coordinates from h to 0
+                const v = (buffer[i] + 1) / 2; // Normalize to 0..1
+                const y = v * h;
                 if (i === 0) this.ctx.moveTo(x, y);
                 else this.ctx.lineTo(x, y);
                 x += sliceWidth;
