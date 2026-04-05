@@ -19,6 +19,7 @@ class App {
         this.energy = 0.5;
         this.tracks = {};
         this.performanceMap = {};
+        this.optimizedPerformance = {};
         this.snapshots = JSON.parse(localStorage.getItem('ts_snapshots') || '[]');
         
         this.initLoader();
@@ -58,7 +59,23 @@ class App {
     regenPerformance() {
         const loopData = Algorithms.Generate(this.currentSeed, this.currentMood, this.energy);
         this.performanceMap = loopData;
+        this.optimizePerformance();
         this.ui.updateMarkers(loopData.markers);
+    }
+
+    optimizePerformance() {
+        this.optimizedPerformance = {};
+        Object.keys(this.performanceMap).forEach(id => {
+            if (Array.isArray(this.performanceMap[id])) {
+                this.optimizedPerformance[id] = {};
+                this.performanceMap[id].forEach(h => {
+                    if (!this.optimizedPerformance[id][h.time]) {
+                        this.optimizedPerformance[id][h.time] = [];
+                    }
+                    this.optimizedPerformance[id][h.time].push(h);
+                });
+            }
+        });
     }
 
     bindEvents() {
@@ -164,10 +181,11 @@ class App {
             this.ui.updatePlaybackProgress(beatIdx);
 
             Object.keys(this.tracks).forEach(id => {
-                if (this.tracks[id].enabled && this.performanceMap[id]) {
-                    // Optimized search for hits at this specific millisecond step
-                    const hits = this.performanceMap[id].filter(h => h.time === beatIdx);
-                    hits.forEach(h => this.engine.trigger(id, h.note, time));
+                if (this.tracks[id].enabled && this.optimizedPerformance[id]) {
+                    const hits = this.optimizedPerformance[id][beatIdx];
+                    if (hits) {
+                        hits.forEach(h => this.engine.trigger(id, h.note, time));
+                    }
                 }
             });
             step++;
