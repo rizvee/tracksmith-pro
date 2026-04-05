@@ -60,18 +60,14 @@ export class Exporter {
             const hits = performanceMap[id];
             hits.sort((a, b) => a.time - b.time);
 
-            let lastTime = 0;
             hits.forEach(hit => {
-                // Calculate delta time from previous hit (in ticks or 16ths)
                 const startTick = hit.time * 128; // Standard 128 ticks per 16th note
-                const wait = startTick - lastTime;
                 
                 track.addEvent(new window.MidiWriter.NoteEvent({
                     pitch: [hit.note],
                     duration: '16',
                     startTick: startTick
                 }));
-                // lastTime = startTick;
             });
 
             writer.addTrack(track);
