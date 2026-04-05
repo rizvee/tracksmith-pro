@@ -129,7 +129,8 @@ export class UI {
             if (!analyser) return;
             requestAnimationFrame(draw);
 
-            const buffer = analyser.getValue();
+            const dataArray = analyser.getValue();
+            const bufferLength = dataArray.length;
 
             const w = this.canvas.width / (window.devicePixelRatio || 1);
             const h = this.canvas.height / (window.devicePixelRatio || 1);
@@ -143,11 +144,11 @@ export class UI {
             this.ctx.shadowBlur = 15;
             this.ctx.shadowColor = "rgba(59, 130, 246, 1)";
             
-            const sliceWidth = w / buffer.length;
+            const sliceWidth = w / bufferLength;
             let x = 0;
-            for (let i = 0; i < buffer.length; i++) {
-                // buffer[i] is between -1.0 and 1.0. We map it to y coordinates from h to 0
-                const v = (buffer[i] + 1) / 2; // Normalize to 0..1
+            for (let i = 0; i < bufferLength; i++) {
+                // dataArray[i] is between -1.0 and 1.0. We map it to y coordinates from h to 0
+                const v = (dataArray[i] + 1) / 2; // Normalize to 0..1
                 const y = v * h;
                 if (i === 0) this.ctx.moveTo(x, y);
                 else this.ctx.lineTo(x, y);
