@@ -169,15 +169,6 @@ export class Exporter {
         }
     }
 
-    downloadAudio() {
-        // Handled by renderOffline now
-    }
-
-    downloadMIDI(performanceMap) {
-        // MidiWriter.js removed, MIDI export could be rebuilt natively or left disabled/removed
-        console.log("MIDI export requires a library, feature disabled in pure Web Audio build.");
-    }
-
     _triggerDownload(url, filename) {
         const a = document.createElement("a");
         a.href = url; a.download = filename;
