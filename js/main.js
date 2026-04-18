@@ -89,7 +89,6 @@ class App {
         this.ui.bindXYPad((x, y) => this.engine.updateFX(x, y));
         this.setupWebMIDI();
         document.getElementById("btn-download").disabled = false;
-        // document.getElementById("btn-midi").disabled = false; // MIDI export removed
     }
 
     async setupWebMIDI() {
@@ -216,8 +215,6 @@ class App {
                 this.ui.updateStatus("Render Complete", false);
             });
         });
-
-        // document.getElementById("btn-midi").addEventListener("click", () => this.exporter.downloadMIDI(this.performanceMap));
     }
 
     triggerSmartTransition() {
