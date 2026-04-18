@@ -219,10 +219,7 @@ class App {
 
     triggerSmartTransition() {
         // Simple fill logic: inject fill but still regen full loop
-        this.isPlayingFill = true;
-        this.fillData = Algorithms.GenerateFill();
         setTimeout(() => {
-            this.isPlayingFill = false;
             this.regenPerformance();
         }, 1000); // 1-bar transition at ~120BPM
     }

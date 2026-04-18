@@ -170,18 +170,5 @@ export const Algorithms = {
         }
 
         return performance;
-    },
-
-    /**
-     * SMART TRANSITION: Generate a 1-bar Drum Fill
-     */
-    GenerateFill() {
-        const fill = [];
-        for (let i = 0; i < 16; i++) {
-            if (Math.random() < 0.6) {
-                fill.push({ time: i, note: i % 4 === 0 ? "C3" : "D3" });
-            }
-        }
-        return fill;
     }
 };
