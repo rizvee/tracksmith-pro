@@ -38,7 +38,27 @@ export class UI {
         this.init();
     }
 
+
+    initTabs() {
+        this.tabBtns = document.querySelectorAll('.tab-btn');
+        this.tabContents = document.querySelectorAll('.tab-content');
+
+        this.tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class
+                this.tabBtns.forEach(b => b.classList.remove('active'));
+                this.tabContents.forEach(c => c.classList.remove('active'));
+
+                // Add active class to clicked tab
+                btn.classList.add('active');
+                const target = document.getElementById(btn.dataset.target);
+                if (target) target.classList.add('active');
+            });
+        });
+    }
+
     init() {
+        this.initTabs();
         this.resize();
         window.addEventListener("resize", () => this.resize());
         if (this.seqCanvas) {

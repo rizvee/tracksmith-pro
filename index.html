@@ -67,6 +67,16 @@
     </header>
 
     <main class="app-container">
+        <nav class="app-tabs">
+            <button class="tab-btn active" data-target="tab-generator">Generator</button>
+            <button class="tab-btn" data-target="tab-studio">Studio</button>
+            <button class="tab-btn" data-target="tab-utilities">Utilities</button>
+            <button class="tab-btn" data-target="tab-ambience">Ambience</button>
+            <button class="tab-btn" data-target="tab-theory">Theory</button>
+        </nav>
+
+        <div class="tab-content active" id="tab-generator">
+
         <section class="controls-section">
             <div class="control-card glass">
                 <h3>Global Dashboard</h3>
@@ -208,6 +218,32 @@
                 </div>
             </div>
         </section>
+
+        </div>
+
+        <div class="tab-content" id="tab-studio">
+            <h2>Studio Tools</h2>
+            <div id="virtual-piano-container"></div>
+            <div id="chord-generator-container"></div>
+            <div id="drum-machine-container"></div>
+        </div>
+
+        <div class="tab-content" id="tab-utilities">
+            <h2>Utilities</h2>
+            <div id="metronome-container"></div>
+            <div id="tap-tempo-container"></div>
+            <div id="frequency-visualizer-container"></div>
+        </div>
+
+        <div class="tab-content" id="tab-ambience">
+            <h2>Lo-Fi Ambience</h2>
+            <div id="lofi-mixer-container"></div>
+        </div>
+
+        <div class="tab-content" id="tab-theory">
+            <h2>Theory Flashcards</h2>
+            <div id="flashcards-container"></div>
+        </div>
     </main>
 
     <footer class="app-footer glass">

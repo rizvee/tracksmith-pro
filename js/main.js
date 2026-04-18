@@ -1,3 +1,5 @@
+import { LofiMixer } from './modules/ambience.js';
+import { TheoryFlashcards } from './modules/theory.js';
 /**
  * TrackSmith Main Controller - Phase 5 High-Impact Build
  */
@@ -11,6 +13,14 @@ class App {
     constructor() {
         this.engine = new Engine();
         this.ui = new UI();
+
+        // Ambience Tab
+        this.lofiMixer = new LofiMixer('lofi-mixer-container');
+        this.lofiMixer.init();
+
+        // Theory Tab
+        this.theoryFlashcards = new TheoryFlashcards('flashcards-container');
+        this.theoryFlashcards.init();
         this.exporter = new Exporter();
         
         this.isPlaying = false;

@@ -264,3 +264,168 @@ button, input[type="range"], select, .switch {
     .track-controls { justify-content: space-between; width: 100%; }
     .vol-range { width: 60px !important; }
 }
+
+/* App Tabs Navigation */
+.app-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+}
+
+.app-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    background: var(--card-glass);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255,255,255,0.05);
+}
+
+.tab-btn.active {
+    color: #fff;
+    background: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+    border-color: var(--accent);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ambience Mixer */
+.mixer-board {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.mixer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.fader-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+.fader-channel {
+    background: rgba(255,255,255,0.02);
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.fader-slider {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    width: 8px;
+    height: 150px;
+    padding: 0 5px;
+}
+
+/* Theory Flashcards */
+.theory-wrapper {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+.theory-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.flashcard-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 400px;
+    height: 250px;
+}
+.flashcard {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+.flashcard.flipped {
+    transform: rotateY(180deg);
+}
+.flashcard-inner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+}
+.flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border-radius: var(--radius);
+    background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+    border: 1px solid var(--glass-border);
+    text-align: center;
+}
+.flashcard-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(145deg, rgba(59, 130, 246, 0.1), rgba(0,0,0,0.4));
+    border-color: var(--accent);
+}
+.card-category {
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+.flip-hint {
+    position: absolute;
+    bottom: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+.flashcard-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
