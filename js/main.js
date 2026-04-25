@@ -81,6 +81,7 @@ class App {
             this.bindEvents();
             this.ui.renderSnapshots(this.snapshots, (s) => this.loadSnapshot(s));
             this.ui.updateStatus(`SEED: #${this.currentSeed}`, true);
+            if (window.lucide) window.lucide.createIcons();
         } catch (e) {
             this.ui.updateStatus("Manifest Fetch Error", false);
         }
