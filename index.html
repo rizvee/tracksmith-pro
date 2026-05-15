@@ -52,6 +52,7 @@
     </script>
     
     <!-- Dependencies -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Removed Tone.js and MidiWriterJS -->
 </head>
 <body>
@@ -61,8 +62,7 @@
             <h1>TrackSmith<span class="pro-badge">PRO</span></h1>
         </div>
         <nav>
-            <button id="pwa-install" class="btn-ghost">Install App</button>
-            <button id="help-toggle" class="btn-icon">?</button>
+            <button id="pwa-install" class="btn-ghost" title="Install App">Install App</button>
         </nav>
     </header>
 
@@ -78,23 +78,21 @@
         <div class="tab-content active" id="tab-generator">
 
         <section class="controls-section">
-            <div class="control-card glass">
-                <h3>Global Dashboard</h3>
-                <div class="control-grid glass">
+            <div class="control-card">
+                <div class="control-grid">
                 <div class="control-item">
                     <label for="mood-select">Mood / Scale</label>
                     <select id="mood-select" class="mood-dropdown">
-                        <option value="pentatonic">✨ Pentatonic (Safe)</option>
-                        <option value="bhairavi">🧘 Raag Bhairavi (Meditation)</option>
-                        <option value="yaman">🌅 Raag Yaman (Early Morning)</option>
-                        <option value="dorian">🎸 Dorian (Jazzy/Funk)</option>
-                        <option value="blue">🎷 Blues Scale</option>
+                        <option value="pentatonic">Pentatonic</option>
+                        <option value="bhairavi">Raag Bhairavi</option>
+                        <option value="yaman">Raag Yaman</option>
+                        <option value="dorian">Dorian</option>
+                        <option value="blue">Blues Scale</option>
                     </select>
                 </div>
                 <div class="control-item">
                     <label for="energy-slider">Energy Density</label>
                     <input type="range" id="energy-slider" min="0" max="1" step="0.01" value="0.5">
-                    <div class="slider-labels"><span>Striped</span><span>Orchestral</span></div>
                 </div>
                 <div class="control-item">
                     <label for="bpm-range">Tempo (BPM): <span id="bpm-val">120</span></label>
@@ -102,10 +100,11 @@
                 </div>
             </div>
 
-            <section class="timeline-section glass">
+            <section class="timeline-section">
                 <div class="timeline-header">
-                    <h3>Video-Sync Timeline</h3>
-                    <button id="btn-copy-attribution" class="btn-micro">📋 Copy Attribution</button>
+                    <button id="btn-copy-attribution" class="btn-micro" title="Copy Attribution">
+                        <i data-lucide="copy"></i>
+                    </button>
                 </div>
                 <div id="video-timeline" class="timeline-track">
                     <!-- Markers injected via JS -->
@@ -113,7 +112,7 @@
                 </div>
             </section>
 
-            <div class="visualizer-container glass">
+            <div class="visualizer-container">
                 <canvas id="viz-canvas"></canvas>
                 <div class="overlay-info">
                     <div id="bpm-display">120 BPM</div>
@@ -122,26 +121,26 @@
                 </div>
             </div>
 
-            <section class="sequencer-section glass">
-                <h3>Step Sequencer (Manual Override)</h3>
+            <section class="sequencer-section">
                 <div class="sequencer-container">
                     <canvas id="sequencer-canvas"></canvas>
                 </div>
             </section>
 
-            <section class="snapshot-section glass">
-                <h3>Saved Snapshots</h3>
+            <section class="snapshot-section">
                 <div id="snapshot-gallery" class="snapshot-grid">
                     <!-- Snapshots -->
                 </div>
-                <button id="btn-save-snapshot" class="btn-secondary">💾 Save Current Vibe</button>
+                <button id="btn-save-snapshot" class="btn-secondary" title="Save Snapshot">
+                    <i data-lucide="save"></i>
+                </button>
             </section>
             </div>
 
             <div class="tracks-container">
                 <div class="track-card glass" data-track="tabla">
                     <div class="track-info">
-                        <span class="instrument-icon">🥁</span>
+                        <span class="instrument-icon"><i data-lucide="drum"></i></span>
                         <h4>Tabla Beats</h4>
                     </div>
                     <div class="track-controls">
@@ -159,7 +158,7 @@
 
                 <div class="track-card glass" data-track="piano">
                     <div class="track-info">
-                        <span class="instrument-icon">🎹</span>
+                        <span class="instrument-icon"><i data-lucide="piano"></i></span>
                         <h4>Ambient Piano</h4>
                     </div>
                     <div class="track-controls">
@@ -177,7 +176,7 @@
 
                 <div class="track-card glass" data-track="guitar">
                     <div class="track-info">
-                        <span class="instrument-icon">🎸</span>
+                        <span class="instrument-icon"><i data-lucide="guitar"></i></span>
                         <h4>Acoustic Guitar</h4>
                     </div>
                     <div class="track-controls">
@@ -194,26 +193,22 @@
                 </div>
             </div>
 
-            <section class="performance-section glass">
-                <div class="perf-header">
-                    <h3>FX Performance Pad</h3>
-                    <p>X: Filter Cutoff | Y: Reverb Mix</p>
-                </div>
+            <section class="performance-section">
                 <div id="xy-pad" class="xy-pad-container">
                     <div id="xy-pointer" class="xy-pointer"></div>
                 </div>
             </section>
 
-            <div class="action-bar glass">
-                <button id="btn-master-play" class="btn-primary">
-                    <span class="icon">▶</span> START GENERATOR
+            <div class="action-bar">
+                <button id="btn-master-play" class="btn-primary" title="Start Generator">
+                    <i data-lucide="play"></i>
                 </button>
                 <div class="export-group">
-                    <button id="btn-record" class="btn-record">
-                        <span class="record-dot"></span> RECORD
+                    <button id="btn-record" class="btn-record" title="Record">
+                        <i data-lucide="circle"></i>
                     </button>
-                    <button id="btn-download" class="btn-download" disabled>
-                        <span>⬇</span> SAVE WAV
+                    <button id="btn-download" class="btn-download" disabled title="Save WAV">
+                        <i data-lucide="download"></i>
                     </button>
                 </div>
             </div>
@@ -246,20 +241,20 @@
         </div>
     </main>
 
-    <footer class="app-footer glass">
+    <footer class="app-footer">
         <p>© 2026 TrackSmith - Crafted by <a href="https://rizvee.github.io" style="color: var(--accent); text-decoration: none;">Hasan Rizvee</a></p>
         <p>100% Royal-Free Background Score for Reels & Shorts.</p>
     </footer>
 
     <!-- Modal for attribution -->
     <div id="modal-attribution" class="modal-overlay hidden">
-        <div class="modal-content glass">
+        <div class="modal-content">
             <h3>Creative Commons Attribution</h3>
             <p>Your score is ready for social media. Copy the snippet below to credit the engine correctly:</p>
             <textarea id="text-attribution" readonly class="attribution-box"></textarea>
             <div class="modal-actions">
-                <button id="btn-copy-finish" class="btn-primary">📋 Copy & Close</button>
-                <button id="btn-modal-close" class="btn-secondary">Close</button>
+                <button id="btn-copy-finish" class="btn-primary" title="Copy & Close"><i data-lucide="copy"></i></button>
+                <button id="btn-modal-close" class="btn-secondary" title="Close"><i data-lucide="x"></i></button>
             </div>
         </div>
     </div>
